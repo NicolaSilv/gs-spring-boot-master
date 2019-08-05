@@ -45,7 +45,7 @@ pipeline {
         }
         stage ('Deployment Stage') {
              steps {
-                 dir("initial")
+                 dir("initial"){
                     withMaven(maven : 'Maven 3.5.2') {
                         sh 'mvn deploy'
                     }
