@@ -13,13 +13,13 @@ pipeline {
                 ''' 
             }
         }
-        stage ('install') {
+        /*stage ('install') {
             steps {
                 dir ('initial') {
                     sh 'mvn -Dmaven.test.failure.ignore=true install'
                 } 
             }
-        }
+        }*/
         stage ('Compile Stage') {
             steps {
                 dir("initial"){
