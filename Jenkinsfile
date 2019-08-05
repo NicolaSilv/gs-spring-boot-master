@@ -4,47 +4,55 @@ pipeline {
         maven 'Maven 3.5.2' 
         jdk 'JDK 8' 
     }
-     stages ('Initialize') {
-        steps {
-            sh '''
-                echo "PATH = ${PATH}"
-                echo "M2_HOME = ${M2_HOME}"
-            ''' 
-        }
-    }
-     stage ('install') {
-        steps {
-            dir ('initial') {
-                sh 'mvn -Dmaven.test.failure.ignore=true install'
-            } 
-        }
-    }
-    stages {
-        stage ('Compile Stage') {
-
-            steps {
-                withMaven(maven : 'Maven 3.5.2') {
-                    sh 'mvn clean compile'
+        stages {
+            stage ('Initialize') {
+                steps {
+                    sh '''
+                        echo "PATH = ${PATH}"
+                        echo "M2_HOME = ${M2_HOME}"
+                    ''' 
                 }
             }
-        }
-
-        stage ('Testing Stage') {
-
-            steps {
-                withMaven(maven : 'Maven 3.5.2') {
-                    sh 'mvn test'
+            stage ('install') {
+                steps {
+                    dir ('initial') {
+                        sh 'mvn -Dmaven.test.failure.ignore=true install'
+                    } 
                 }
             }
-        }
-
-
-        stage ('Deployment Stage') {
-            steps {
-                withMaven(maven : 'Maven 3.5.2') {
+             stage ('Compile Stage') {
+                steps {
+                    withMaven(maven : 'Maven 3.5.2') {
+                        sh 'mvn clean compile'
+                    }
+                }
+            }
+            stage ('test') {
+                steps {
+                    dir ('initial') {
+                        sh 'mvn test'
+                    } 
+                }
+            }
+            stage ('verify') {
+                steps {
+                    dir ('initial') {
+                        sh 'mvn verify'
+                    } 
+                }
+            }
+            stage ('Deployment Stage') {
+             steps {
+                withMaven(maven : 'maven_3_5_0') {
                     sh 'mvn deploy'
                 }
             }
+            stage ('package') {
+                steps {
+                    dir ('initial') {
+                        sh 'mvn package'
+                    } 
+                }
+            }        
         }
-    }
-}
+   }
