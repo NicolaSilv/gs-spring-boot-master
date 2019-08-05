@@ -4,7 +4,7 @@ pipeline {
         maven 'Maven 3.5.2' 
         jdk 'JDK 8' 
     }
-     stage ('Initialize') {
+     stages ('Initialize') {
         steps {
             sh '''
                 echo "PATH = ${PATH}"
