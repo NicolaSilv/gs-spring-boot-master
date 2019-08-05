@@ -29,7 +29,7 @@ pipeline {
                 }
             }
         }
-        /*stage ('test') {
+        stage ('test') {
             steps {
                 dir ('initial') {
                     sh 'mvn test'
@@ -56,6 +56,6 @@ pipeline {
                     sh 'mvn package'
                 } 
             }
-        }*/        
+        }       
     }
 }
