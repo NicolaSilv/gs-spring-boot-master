@@ -1,30 +1,54 @@
 pipeline {
     agent any
-
-    stages {
-        stage('Build') {
-            steps {
-                sh 'make'
-            }
-        }
-        stage('Test') {
-            steps {
-                /* `make check` returns non-zero on test failures,
-                * using `true` to allow the Pipeline to continue nonetheless
-                */
-                sh 'make check || true' 
-                junit '**/target/*.xml' 
-            }
-        }
-            stage('Deploy') {
-            when {
-              expression {
-                currentBuild.result == null || currentBuild.result == 'SUCCESS' 
-              }
-            }
-            steps {
-                sh 'make publish'
-            }
-        }
+    tools { 
+        maven 'mvn' 
+        jdk 'jdk8' 
     }
+        stages {
+            stage ('Initialize') {
+                steps {
+                    sh '''
+                        echo "PATH = ${PATH}"
+                        echo "M2_HOME = ${M2_HOME}"
+                    ''' 
+                }
+            }
+            stage ('install') {
+                steps {
+                    dir ('initial') {
+                        sh 'mvn -Dmaven.test.failure.ignore=true install'
+                    } 
+                }
+            }
+            stage ('test') {
+                steps {
+                    dir ('initial') {
+                        sh 'mvn test'
+                    } 
+                }
+            }
+            stage ('verify') {
+                steps {
+                    dir ('initial') {
+                        sh 'mvn verify'
+                    } 
+                }
+            }
+            stage ('package') {
+                steps {
+                    dir ('initial') {
+                        sh 'mvn package'
+                    } 
+                }
+            }
+            stage('Deliver') { 
+                steps {
+                    dir ('initial/jenkins/scripts') {
+                        sh 'sh deliver.sh'
+                    }
+                }
+            }
+        
+    }
+    
 }
