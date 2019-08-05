@@ -22,7 +22,9 @@ pipeline {
         }
         stage ('Compile Stage') {
             steps {
+                '''
                 cd initial
+                '''
                 withMaven(maven : 'Maven 3.5.2') {
                     sh 'mvn clean compile'
                 }
