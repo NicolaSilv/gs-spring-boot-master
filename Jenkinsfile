@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                bat 'make'
+                sh 'make'
                 archiveArtifacts artifacts: '/target/gs-spring-boot-0.1.0.jar', fingerprint: true 
             }
         }
@@ -13,7 +13,7 @@ pipeline {
                 /* `make check` returns non-zero on test failures,
                 * using `true` to allow the Pipeline to continue nonetheless
                 */
-                bat 'make check || true' 
+                sh 'make check || true' 
                 junit '**/target/*.xml' 
             }
         }
@@ -24,7 +24,7 @@ pipeline {
               }
             }
             steps {
-                bat 'make publish'
+                sh 'make publish'
             }
         }
     }
