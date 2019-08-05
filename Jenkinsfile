@@ -41,14 +41,7 @@ pipeline {
                     } 
                 }
             }
-            stage('Deliver') { 
-                steps {
-                    dir ('initial/jenkins/scripts') {
-                        sh 'sh deliver.sh'
-                    }
-                }
-            }
-        
+                   
     }
     
 }
