@@ -12,6 +12,13 @@ pipeline {
             ''' 
         }
     }
+     stage ('install') {
+        steps {
+            dir ('initial') {
+                sh 'mvn -Dmaven.test.failure.ignore=true install'
+            } 
+        }
+    }
     stages {
         stage ('Compile Stage') {
 
