@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh 'make'
+                bat 'make'
                 archiveArtifacts artifacts: '/target/gs-spring-boot-0.1.0.jar', fingerprint: true 
             }
         }
