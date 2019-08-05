@@ -43,7 +43,7 @@ pipeline {
                 } 
             }
         }
-        stage ('Deployment Stage') {
+        /*stage ('Deployment Stage') {
              steps {
                  dir("initial"){
                     withMaven(maven : 'Maven 3.5.2') {
@@ -51,7 +51,7 @@ pipeline {
                     }
                 }
             }
-        }
+        }*/
         stage ('package') {
             steps {
                 dir ('initial') {
